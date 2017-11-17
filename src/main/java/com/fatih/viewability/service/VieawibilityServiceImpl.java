@@ -1,4 +1,4 @@
-package com.meetrics.viewability.service;
+package com.fatih.viewability.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.meetrics.viewability.model.Impression;
+import com.fatih.viewability.model.Impression;
 
 @Service
 public class VieawibilityServiceImpl implements VieawibilityService {

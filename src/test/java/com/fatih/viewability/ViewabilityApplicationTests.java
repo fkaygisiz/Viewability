@@ -1,4 +1,4 @@
-package com.meetrics.viewability;
+package com.fatih.viewability;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.meetrics.viewability.controller.ViewabilityController;
+import com.fatih.viewability.controller.ViewabilityController;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

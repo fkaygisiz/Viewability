@@ -1,4 +1,4 @@
-package com.meetrics.viewability.model;
+package com.fatih.viewability.model;
 
 import java.util.HashMap;
 import java.util.Map;

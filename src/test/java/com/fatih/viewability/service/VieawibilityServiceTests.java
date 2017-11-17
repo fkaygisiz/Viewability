@@ -1,4 +1,4 @@
-package com.meetrics.viewability.service;
+package com.fatih.viewability.service;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.meetrics.viewability.model.Impression;
+import com.fatih.viewability.model.Impression;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

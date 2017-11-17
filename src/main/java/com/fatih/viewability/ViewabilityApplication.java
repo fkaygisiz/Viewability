@@ -1,4 +1,4 @@
-package com.meetrics.viewability;
+package com.fatih.viewability;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

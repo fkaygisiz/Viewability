@@ -1,4 +1,4 @@
-package com.meetrics.viewability.controller;
+package com.fatih.viewability.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.meetrics.viewability.model.Impression;
-import com.meetrics.viewability.service.VieawibilityService;
+import com.fatih.viewability.model.Impression;
+import com.fatih.viewability.service.VieawibilityService;
 
 @RestController
 @RequestMapping("/viewability")

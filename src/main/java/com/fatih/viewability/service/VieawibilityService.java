@@ -1,8 +1,8 @@
-package com.meetrics.viewability.service;
+package com.fatih.viewability.service;
 
 import java.util.List;
 
-import com.meetrics.viewability.model.Impression;
+import com.fatih.viewability.model.Impression;
 
 public interface VieawibilityService {
 
