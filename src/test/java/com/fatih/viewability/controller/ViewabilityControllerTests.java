@@ -1,11 +1,15 @@
 package com.fatih.viewability.controller;
 
-import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.collection.IsArrayContaining.hasItemInArray;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import static org.hamcrest.Matchers.hasSize;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -52,6 +54,30 @@ public class ViewabilityControllerTests {
 				.andExpect(MockMvcResultMatchers.jsonPath("$.[0].data.10%%").value(123))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.[1].data.25%%").value(93))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.[2].data.50%%").value(13));
+	}
+
+	@Test
+	public void shouldGetAllImpressionCountOfPercentages() throws Exception {
+		this.mockMvc.perform(get("/viewability/impressions/all")).andDo(print()).andExpect(status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.10%%").value(123))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.25%%").value(856))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.50%%").value(325))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.100%%").value(98));
+	}
+
+	@Test
+	public void shouldGetImpressionIdsHavingHigherAverageDurationByViewPercentageAndDuration() throws Exception {
+		List<Integer> expected = new ArrayList<Integer>() {
+			{
+				add(7);
+				add(14);
+				add(18);
+			}
+		};
+		this.mockMvc.perform(get("/viewability/impressions?view=25&durationHigherThan=150")).andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.containsInAnyOrder(expected.toArray())));
+
 	}
 
 }

@@ -5,6 +5,9 @@ import java.util.Map;
 
 public class Impression {
 
+	private long id;
+	private Map<String, Integer> data = new HashMap<>();
+
 	public Impression(long id, Map<String, Integer> data) {
 		super();
 		this.id = id;
@@ -12,27 +15,24 @@ public class Impression {
 	}
 
 	public Impression() {
+		//This Constructor is added for JSON conversion
 	}
-
-	private long id;
 
 	public long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
+	/*
+	 * public void setId(long id) { this.id = id; }
+	 */
 
 	public Map<String, Integer> getData() {
 		return data;
 	}
 
-	public void setData(Map<String, Integer> data) {
-		this.data = data;
-	}
-
-	private Map<String, Integer> data = new HashMap<>();
+	/*
+	 * public void setData(Map<String, Integer> data) { this.data = data; }
+	 */
 
 	@Override
 	public String toString() {

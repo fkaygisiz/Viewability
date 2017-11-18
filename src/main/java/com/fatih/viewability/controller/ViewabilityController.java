@@ -1,10 +1,7 @@
 package com.fatih.viewability.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,9 +29,21 @@ public class ViewabilityController {
 		return vieawibilityService.getImpressionById(id);
 	}
 
-	@RequestMapping("/impressions")
+	@RequestMapping(value = "/impressions")
 	public List<Impression> getAllImpression() {
 		return vieawibilityService.getAllImpressions();
 	}
 
+	@RequestMapping("/impressions/all")
+	public Map<String, Integer> getAllImpressionCountOfPercentages() {
+		return vieawibilityService.getAllImpressionCountOfPercentages();
+	}
+
+	@RequestMapping(value = "/impressions", params = { "view", "durationHigherThan" })
+	public List<Integer> getImpressionIdsHavingHigherAverageDurationByViewPercentageAndDuration(
+			@RequestParam Integer view, @RequestParam Integer durationHigherThan) {
+		return vieawibilityService.getImpressionIdsHavingHigherAverageDurationByViewPercentageAndDuration(view,
+				durationHigherThan);
+	}
+	
 }

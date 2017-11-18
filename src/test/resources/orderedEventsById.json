@@ -1,0 +1,49 @@
+[  
+   {  
+      "id":1,
+      "events":[  
+         {  
+            "view":25,
+            "duration":240
+         },
+         {  
+            "view":25,
+            "duration": 100
+         },
+         {  
+            "view":50,
+            "duration":687
+         }
+      ]
+   },
+   {  
+      "id":2,
+      "events":[ 
+         {  
+            "view":50,
+            "duration":59
+         },
+         {  
+            "view":100,
+            "duration" :290
+         },
+         {  
+            "view":25,
+            "duration":287
+         },
+         {  
+            "view":10,
+            "duration":740
+         }
+      ]
+   },
+   {  
+      "id":3,
+      "events":[  
+         {  
+            "view":100,
+            "duration":2000
+         }
+      ]
+   }
+]
