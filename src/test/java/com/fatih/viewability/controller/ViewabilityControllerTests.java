@@ -4,10 +4,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.collection.IsArrayContaining.hasItemInArray;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -28,56 +24,71 @@ public class ViewabilityControllerTests {
 	private MockMvc mockMvc;
 
 	@Test
-	public void shouldGetImpressionCountsOfPercentagesByAdIdFromPath() throws Exception {
-		this.mockMvc.perform(get("/viewability/impression/1")).andDo(print()).andExpect(status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.data.10%%").value(123))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.data.25%%").value(856))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.data.50%%").value(325))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.data.100%%").value(98));
+	public void shouldGetImpressionCountsOfPercentagesByAdIdFromPathTest1() throws Exception {
+		this.mockMvc.perform(get("/viewability/impression?id=XX-CVG")).andDo(print()).andExpect(status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.id").value("XX-CVG"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.average.25%%").value(930.0))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.average.100%%").value(2800));
+	}
+
+	@Test
+	public void shouldGetNoContentErrorFromGetImpressionCountsOfPercentagesByAdIdFromPathWhenIdIsNotFound()
+			throws Exception {
+		this.mockMvc.perform(get("/viewability/impression/12313132")).andDo(print()).andExpect(status().isNoContent());
+	}
+
+	@Test
+	public void shouldGetImpressionCountsOfPercentagesByAdIdFromPathTest2() throws Exception {
+		this.mockMvc.perform(get("/viewability/impression?id=HFC-PKJ")).andDo(print()).andExpect(status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.id").value("HFC-PKJ"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.average.10%%").value(2050.0))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.average.100%%").value(1240));
 	}
 
 	@Test
 	public void shouldGetImpressionCountsOfPercentagesByAdIdFromParameter() throws Exception {
-		this.mockMvc.perform(get("/viewability/impression?id=1")).andDo(print()).andExpect(status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.data.10%%").value(123))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.data.25%%").value(856))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.data.50%%").value(325))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.data.100%%").value(98));
+		this.mockMvc.perform(get("/viewability/impression/XX-CVG")).andDo(print()).andExpect(status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.id").value("XX-CVG"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.average.25%%").value(930.0))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.average.100%%").value(2800));
+	}
+
+	@Test
+	public void shouldGetNoContentErrorFromGetImpressionCountsOfPercentagesByAdIdFromParameterWhenIdIsNotFound()
+			throws Exception {
+		this.mockMvc.perform(get("/viewability/impression?id=12313132")).andDo(print())
+				.andExpect(status().isNoContent());
 	}
 
 	@Test
 	public void shouldGetAllImpression() throws Exception {
 		this.mockMvc.perform(get("/viewability/impressions")).andDo(print()).andExpect(status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.[0].data.10%%").value(123))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.[1].data.25%%").value(93))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.[2].data.50%%").value(13));
+				.andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.[0].average.10%%").value(2050.0))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.[1].average.100%%").value(2800.0));
 	}
 
 	@Test
 	public void shouldGetAllImpressionCountOfPercentages() throws Exception {
 		this.mockMvc.perform(get("/viewability/impressions/all")).andDo(print()).andExpect(status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("$.10%%").value(123))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.25%%").value(856))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.50%%").value(325))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.100%%").value(98));
+				.andExpect(MockMvcResultMatchers.jsonPath("$.10%%").value(2050.0))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.25%%").value(930.0))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.100%%").value(2020.0));
 	}
 
 	@Test
 	public void shouldGetImpressionIdsHavingHigherAverageDurationByViewPercentageAndDuration() throws Exception {
-		List<Integer> expected = new ArrayList<Integer>() {
-			{
-				add(7);
-				add(14);
-				add(18);
-			}
-		};
-		this.mockMvc.perform(get("/viewability/impressions?view=25&durationHigherThan=150")).andDo(print())
+		this.mockMvc.perform(get("/viewability/impressions?view=100&durationHigherThan=800")).andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.containsInAnyOrder(expected.toArray())));
-
+				.andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.containsInAnyOrder("HFC-PKJ", "XX-CVG")));
 	}
 
+	@Test
+	public void getCorrectRowIds() throws Exception {
+		this.mockMvc.perform(get("/viewability/raw/ids")).andDo(print()).andExpect(status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].events", hasSize(2)))
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value("HFC-PKJ"));
+		;
+	}
 }

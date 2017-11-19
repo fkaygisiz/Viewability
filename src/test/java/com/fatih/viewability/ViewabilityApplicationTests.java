@@ -16,7 +16,7 @@ public class ViewabilityApplicationTests {
 
 	@Autowired
 	private ViewabilityController viewabilityController;
-	
+
 	@Test
 	public void contextLoads() {
 		assertNotNull(viewabilityController);

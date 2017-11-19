@@ -4,46 +4,62 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fatih.viewability.model.Impression;
-import com.fatih.viewability.service.VieawibilityService;
+import com.fatih.viewability.model.RawEvent;
+import com.fatih.viewability.service.ViewabilityService;
 
 @RestController
 @RequestMapping("/viewability")
 public class ViewabilityController {
 
 	@Autowired
-	private VieawibilityService vieawibilityService;
+	private ViewabilityService vieawibilityService;
 
 	@RequestMapping("/impression/{id}")
-	public Impression getImpressionCountsOfPercentagesByAdIdFromPath(@PathVariable Long id) {
-		return vieawibilityService.getImpressionById(id);
+	public ResponseEntity<Impression> getImpressionCountsOfPercentagesByAdIdFromPath(@PathVariable String id) {
+		return getImpressionCountsOfPercentagesByAd(id);
 	}
 
 	@RequestMapping("/impression")
-	public Impression getImpressionCountsOfPercentagesByAdIdFromParameter(@RequestParam Long id) {
-		return vieawibilityService.getImpressionById(id);
+	public ResponseEntity<Impression> getImpressionCountsOfPercentagesByAdIdFromParameter(@RequestParam String id) {
+		return getImpressionCountsOfPercentagesByAd(id);
+	}
+
+	private ResponseEntity<Impression> getImpressionCountsOfPercentagesByAd(String id) {
+		Impression impressionById = vieawibilityService.getImpressionById(id);
+		if (impressionById == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(impressionById);
 	}
 
 	@RequestMapping(value = "/impressions")
-	public List<Impression> getAllImpression() {
-		return vieawibilityService.getAllImpressions();
+	public ResponseEntity<List<Impression>> getAllImpression() {
+		return ResponseEntity.ok(vieawibilityService.getAllImpressions());
 	}
 
 	@RequestMapping("/impressions/all")
-	public Map<String, Integer> getAllImpressionCountOfPercentages() {
-		return vieawibilityService.getAllImpressionCountOfPercentages();
+	public ResponseEntity<Map<String, Double>> getAllImpressionCountOfPercentages() {
+		return ResponseEntity.ok(vieawibilityService.getAllImpressionCountOfPercentages());
 	}
 
 	@RequestMapping(value = "/impressions", params = { "view", "durationHigherThan" })
-	public List<Integer> getImpressionIdsHavingHigherAverageDurationByViewPercentageAndDuration(
-			@RequestParam Integer view, @RequestParam Integer durationHigherThan) {
-		return vieawibilityService.getImpressionIdsHavingHigherAverageDurationByViewPercentageAndDuration(view,
-				durationHigherThan);
+	public ResponseEntity<List<String>> getImpressionIdsHavingHigherAverageDurationByViewPercentageAndDuration(
+			@RequestParam String view, @RequestParam Integer durationHigherThan) {
+		return ResponseEntity.ok(vieawibilityService.getImpressionIdsHavingHigherAverageDurationByViewPercentageAndDuration(view,
+				durationHigherThan));
 	}
 	
+	@RequestMapping("/raw/ids")
+	public ResponseEntity<List<RawEvent>> getAllRawEvents() {
+		List<RawEvent> rawEvents = vieawibilityService.getAllRawEvents();
+		return ResponseEntity.ok(rawEvents);
+	}
+
 }

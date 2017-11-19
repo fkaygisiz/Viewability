@@ -3,39 +3,36 @@ package com.fatih.viewability.model;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Impression {
+public class Impression implements Comparable<Impression> {
 
-	private long id;
-	private Map<String, Integer> data = new HashMap<>();
+	private String id;
+	private Map<String, Double> average = new HashMap<>();
 
-	public Impression(long id, Map<String, Integer> data) {
+	public Impression(String id, Map<String, Double> average) {
 		super();
 		this.id = id;
-		this.data = data;
+		this.average = average;
 	}
 
 	public Impression() {
-		//This Constructor is added for JSON conversion
+		// This Constructor is added for JSON conversion
 	}
 
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
-	/*
-	 * public void setId(long id) { this.id = id; }
-	 */
-
-	public Map<String, Integer> getData() {
-		return data;
+	public Map<String, Double> getAverage() {
+		return average;
 	}
-
-	/*
-	 * public void setData(Map<String, Integer> data) { this.data = data; }
-	 */
 
 	@Override
 	public String toString() {
-		return "Impression [id=" + id + ", data=" + data + "]";
+		return "Impression [id=" + id + ", average=" + average + "]";
+	}
+
+	@Override
+	public int compareTo(Impression o) {
+		return this.getId().compareTo(o.getId());
 	}
 }
