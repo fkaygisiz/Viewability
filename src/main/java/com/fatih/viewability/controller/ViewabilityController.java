@@ -19,20 +19,20 @@ import com.fatih.viewability.service.ViewabilityService;
 public class ViewabilityController {
 
 	@Autowired
-	private ViewabilityService vieawibilityService;
+	private ViewabilityService viewabilityService;
 
 	@RequestMapping("/impression/{id}")
 	public ResponseEntity<Impression> getImpressionCountsOfPercentagesByAdIdFromPath(@PathVariable String id) {
-		return getImpressionCountsOfPercentagesByAd(id);
+		return getImpressionCountsOfPercentagesById(id);
 	}
 
 	@RequestMapping("/impression")
 	public ResponseEntity<Impression> getImpressionCountsOfPercentagesByAdIdFromParameter(@RequestParam String id) {
-		return getImpressionCountsOfPercentagesByAd(id);
+		return getImpressionCountsOfPercentagesById(id);
 	}
 
-	private ResponseEntity<Impression> getImpressionCountsOfPercentagesByAd(String id) {
-		Impression impressionById = vieawibilityService.getImpressionById(id);
+	private ResponseEntity<Impression> getImpressionCountsOfPercentagesById(String id) {
+		Impression impressionById = viewabilityService.getImpressionById(id);
 		if (impressionById == null) {
 			return ResponseEntity.noContent().build();
 		}
@@ -40,25 +40,25 @@ public class ViewabilityController {
 	}
 
 	@RequestMapping(value = "/impressions")
-	public ResponseEntity<List<Impression>> getAllImpression() {
-		return ResponseEntity.ok(vieawibilityService.getAllImpressions());
+	public ResponseEntity<List<Impression>> getAllImpressions() {
+		return ResponseEntity.ok(viewabilityService.getAllImpressions());
 	}
 
 	@RequestMapping("/impressions/all")
 	public ResponseEntity<Map<String, Double>> getAllImpressionCountOfPercentages() {
-		return ResponseEntity.ok(vieawibilityService.getAllImpressionCountOfPercentages());
+		return ResponseEntity.ok(viewabilityService.getAllImpressionCountOfPercentages());
 	}
 
 	@RequestMapping(value = "/impressions", params = { "view", "durationHigherThan" })
 	public ResponseEntity<List<String>> getImpressionIdsHavingHigherAverageDurationByViewPercentageAndDuration(
 			@RequestParam String view, @RequestParam Integer durationHigherThan) {
-		return ResponseEntity.ok(vieawibilityService.getImpressionIdsHavingHigherAverageDurationByViewPercentageAndDuration(view,
+		return ResponseEntity.ok(viewabilityService.getImpressionIdsHavingHigherAverageDurationByViewPercentageAndDuration(view,
 				durationHigherThan));
 	}
 	
 	@RequestMapping("/raw/ids")
 	public ResponseEntity<List<RawEvent>> getAllRawEvents() {
-		List<RawEvent> rawEvents = vieawibilityService.getAllRawEvents();
+		List<RawEvent> rawEvents = viewabilityService.getAllRawEvents();
 		return ResponseEntity.ok(rawEvents);
 	}
 
